@@ -188,15 +188,14 @@
             <span class="form-error">Indiquez votre ville ou code postal.</span>
           </div>
           <div class="form-row">
-            <label for="m-need">Votre besoin <span class="req">*</span></label>
-            <select class="form-control" id="m-need" name="need" required>
-              <option value="" selected disabled>Sélectionnez…</option>
-              <option value="remplacement">Remplacer le pare-brise (200€/cadeau)</option>
-              <option value="impact">Réparer un impact</option>
-              <option value="lateral-arriere">Vitre latérale / lunette arrière</option>
-              <option value="inconnu">Je ne sais pas, à évaluer</option>
-            </select>
-            <span class="form-error">Sélectionnez votre besoin.</span>
+            <label for="m-model">Modèle de la voiture <span class="req">*</span></label>
+            <input class="form-control" id="m-model" name="model" type="text" placeholder="Ex. Peugeot 3008" required />
+            <span class="form-error">Indiquez le modèle de votre véhicule.</span>
+          </div>
+          <div class="form-row">
+            <label for="m-insurance">Assurance <span class="req">*</span></label>
+            <input class="form-control" id="m-insurance" name="insurance" type="text" placeholder="Ex. MAIF, AXA, Groupama…" required />
+            <span class="form-error">Indiquez votre assurance.</span>
           </div>
           <button class="btn btn--cta btn--block" type="submit">Demander ma prise en charge →</button>
           <p class="form-consent">En validant, vous acceptez d'être recontacté. Données traitées conformément au <a href="#">RGPD</a>. Aucune publicité.</p>
@@ -486,11 +485,14 @@
 
   <!-- ============================ STICKY MOBILE ============================ -->
   <div class="sticky-cta">
-    <a class="btn btn--dark" href="tel:+33557773388">
-      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M6.6 10.8a15.5 15.5 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.25 11.4 11.4 0 0 0 3.6.57 1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1 11.4 11.4 0 0 0 .57 3.6 1 1 0 0 1-.25 1z"/></svg>
-      Appeler
+    <span class="sticky-avatar">
+      <img src="assets/secretaire-epb.webp" alt="Conseillère Euro Pare-Brise +" width="52" height="52" />
+      <span class="sticky-avatar__dot" aria-hidden="true"></span>
+    </span>
+    <a class="sticky-cta-btn" href="tel:+33557773388" aria-label="Contactez-nous pour une prise en charge">
+      <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M6.6 10.8a15.5 15.5 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.25 11.4 11.4 0 0 0 3.6.57 1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1 11.4 11.4 0 0 0 .57 3.6 1 1 0 0 1-.25 1z"/></svg>
+      <span class="sticky-cta-btn__txt"><strong>Contactez-nous</strong><small>pour une prise en charge</small></span>
     </a>
-    <a class="btn btn--cta" href="#devis">Prise en charge</a>
   </div>
 
   <script src="js/main.js"></script>

@@ -375,8 +375,20 @@ p  { color: var(--ink-soft); font-size: clamp(1rem, 1.3vw, 1.08rem); }
 .footer__bottom a { text-decoration: underline; }
 
 /* --------------------------- 18. STICKY MOBILE --------------------- */
-.sticky-cta { position: fixed; left: 0; right: 0; bottom: 0; z-index: 70; display: none; gap: 10px; padding: 10px 12px calc(10px + env(safe-area-inset-bottom)); background: rgba(255,255,255,.97); backdrop-filter: blur(8px); box-shadow: 0 -6px 20px rgba(24,18,51,.16); border-top: 1px solid var(--line); }
-.sticky-cta .btn { flex: 1; padding: 15px 12px; font-size: .98rem; }
+.sticky-cta { position: fixed; left: 0; right: 0; bottom: 0; z-index: 70; display: none; align-items: center; gap: 12px; padding: 10px 12px calc(10px + env(safe-area-inset-bottom)); background: rgba(255,255,255,.97); backdrop-filter: blur(8px); box-shadow: 0 -6px 20px rgba(24,18,51,.16); border-top: 1px solid var(--line); }
+/* Photo conseillère — élément séparé, à côté du CTA */
+.sticky-avatar { position: relative; flex: none; }
+.sticky-avatar::before { content: ""; position: absolute; inset: -8px; border-radius: 50%; background: radial-gradient(circle, rgba(229,0,125,.6) 0%, rgba(229,0,125,0) 68%); z-index: 0; animation: stickyHalo 2.2s ease-in-out infinite; }
+.sticky-avatar img { position: relative; z-index: 1; width: 52px; height: 52px; border-radius: 50%; object-fit: cover; object-position: center top; border: 2px solid #fff; box-shadow: var(--shadow-sm); display: block; }
+.sticky-avatar__dot { position: absolute; z-index: 2; bottom: 2px; right: 2px; width: 12px; height: 12px; border-radius: 50%; background: #22c55e; border: 2px solid #fff; }
+@keyframes stickyHalo { 0%, 100% { transform: scale(.85); opacity: .4; } 50% { transform: scale(1.2); opacity: .9; } }
+/* CTA dédié */
+.sticky-cta-btn { flex: 1; display: flex; align-items: center; gap: 11px; background: var(--pink-500); color: #fff; border-radius: var(--r-pill); padding: 12px 18px; box-shadow: var(--shadow-pink); transition: background .2s, transform .15s; }
+.sticky-cta-btn:active { transform: translateY(1px); }
+.sticky-cta-btn svg { flex: none; width: 22px; height: 22px; }
+.sticky-cta-btn__txt { display: flex; flex-direction: column; line-height: 1.15; text-align: left; }
+.sticky-cta-btn__txt strong { font-size: 1rem; font-weight: 800; }
+.sticky-cta-btn__txt small { font-size: .78rem; opacity: .92; }
 
 /* --------------------------- 19. ANIMATIONS ------------------------ */
 .reveal { opacity: 0; transform: translateY(22px); transition: opacity .6s ease, transform .6s ease; }
@@ -385,6 +397,7 @@ p  { color: var(--ink-soft); font-size: clamp(1rem, 1.3vw, 1.08rem); }
   html { scroll-behavior: auto; }
   .reveal { opacity: 1; transform: none; transition: none; }
   .card:hover, .btn:hover, .review:hover { transform: none; }
+  .sticky-avatar::before { animation: none; opacity: .5; }
 }
 
 /* --------------------------- 20. RESPONSIVE ------------------------ */
@@ -417,7 +430,7 @@ p  { color: var(--ink-soft); font-size: clamp(1rem, 1.3vw, 1.08rem); }
   .proof-stats { grid-template-columns: 1fr 1fr; }
   .usps { grid-template-columns: 1fr 1fr; }
   .sticky-cta { display: flex; }
-  body { padding-bottom: 78px; }
+  body { padding-bottom: 96px; }
 }
 @media (max-width: 540px) {
   .cards, .steps, .split, .zone { grid-template-columns: 1fr; }
