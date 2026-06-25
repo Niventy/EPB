@@ -453,4 +453,23 @@ p  { color: var(--ink-soft); font-size: clamp(1rem, 1.3vw, 1.08rem); }
   .offer-actions { flex-direction: column; }
   .offer-actions .btn { width: 100%; }
   .header__cta { display: none; }
+  /* Formulaire mobile : intro condensée + carte plus compacte (champs plus larges) */
+  .devis .container { gap: 18px; }
+  .devis__copy h2 { font-size: clamp(1.38rem, 5.6vw, 1.7rem); margin-bottom: 10px; }
+  .devis__copy p { font-size: .94rem; }
+  .devis__list { margin-top: 14px; gap: 8px; }
+  .devis__list li { font-size: .92rem; gap: 10px; }
+  .devis__list li svg { width: 20px; height: 20px; }
+  .form-card { padding: 24px 15px 20px; }
+  .form-card__flag { left: 15px; }
+  .form-card h3 { font-size: 1.34rem; }
+  .form-card__hint { margin-bottom: 14px; }
+  .form-row { margin-bottom: 12px; }
+  .form-row label { margin-bottom: 5px; }
+  .form-control { padding: 13px 14px; }
+  .form-card .btn--cta { margin-top: 8px; }
+  /* Formulaire centré sur mobile */
+  .form-card { text-align: center; }
+  .form-card__flag { left: 50%; transform: translateX(-50%); }
+  .form-control { text-align: left; }
 }
