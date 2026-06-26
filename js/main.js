@@ -9,30 +9,44 @@
   "use strict";
 
   /* ----------------------------------------------------------------
-     0. CONFIG TRACKING — à compléter lors de la mise en ligne
-     Renseignez vos identifiants puis dé-commentez dans index.html.
+     0. TRACKING — aligné sur le conteneur GTM existant (GTM-PKK297FZ)
+        Conversions Google Ads déjà configurées (compte AW-18038306554) :
+        - APPEL    : déclencheur GTM « clic appel » (Liens uniquement) → capte
+                     directement les clics sur les liens tel:. Rien à pousser.
+        - FORMULAIRE : conversion « prise de rdv envoyé », déclenchée par
+                     l'évènement personnalisé  form_rdv_success.
+        => On pousse cet évènement à la soumission réussie du formulaire.
   ---------------------------------------------------------------- */
-  var TRACKING = {
-    googleAdsConversion: "AW-XXXXXXXXX/XXXXXXXXXXXXXXXX", // étiquette de conversion Google Ads
-    metaPixelLeadEvent: "Lead"                            // évènement standard Meta
-  };
 
-  /** Déclenche les conversions sur soumission/appel. type = 'lead' | 'call' */
+  /** Déclenche la conversion. type = 'call' (appel) | 'lead' (formulaire) */
   function fireConversion(type) {
     try {
-      // Google Ads
-      if (typeof window.gtag === "function") {
-        window.gtag("event", "conversion", { send_to: TRACKING.googleAdsConversion, event_label: type });
+      if (type === "lead") {
+        window.dataLayer = window.dataLayer || [];
+        window.dataLayer.push({ event: "form_rdv_success" });
       }
-      // Meta Pixel
-      if (typeof window.fbq === "function") {
-        window.fbq("track", TRACKING.metaPixelLeadEvent, { content_name: type });
-      }
-      // dataLayer (Google Tag Manager)
-      if (window.dataLayer && typeof window.dataLayer.push === "function") {
-        window.dataLayer.push({ event: "epb_conversion", conversion_type: type });
-      }
+      // 'call' : aucune action ici — le déclencheur GTM « clic appel »
+      //          (Liens uniquement) capte directement les liens tel:.
     } catch (e) { /* tracking non bloquant */ }
+  }
+
+  /* ----------------------------------------------------------------
+     0b. ATTRIBUTION — capture gclid / UTM dans les champs cachés du formulaire
+         (permet l'import des conversions hors-ligne + l'attribution Google Ads)
+  ---------------------------------------------------------------- */
+  function initAttribution() {
+    try {
+      var params = new URLSearchParams(window.location.search);
+      var keys = ["gclid", "gbraid", "wbraid", "utm_source", "utm_medium", "utm_campaign", "utm_term", "utm_content"];
+      keys.forEach(function (k) {
+        var fromUrl = params.get(k);
+        if (fromUrl) { try { sessionStorage.setItem("epb_" + k, fromUrl); } catch (e) {} }
+        var value = fromUrl || (function () { try { return sessionStorage.getItem("epb_" + k); } catch (e) { return null; } })();
+        if (value) {
+          document.querySelectorAll('input[name="' + k + '"]').forEach(function (inp) { inp.value = value; });
+        }
+      });
+    } catch (e) { /* non bloquant */ }
   }
 
   /* ----------------------------------------------------------------
@@ -195,6 +209,7 @@
      INIT
   ---------------------------------------------------------------- */
   document.addEventListener("DOMContentLoaded", function () {
+    initAttribution();
     document.querySelectorAll("form.lead-form").forEach(initForm);
     initCallTracking();
     initFaq();

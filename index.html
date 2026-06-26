@@ -61,9 +61,23 @@
   }
   </script>
 
-  <!-- TRACKING — à activer en production (voir README + js/main.js) -->
+  <!-- ============================================================
+       Google Tag Manager — conteneur GTM-PKK297FZ
+       Gère GA4 (G-XK44TXMF71) + conversions Google Ads via les
+       évènements dataLayer « epb_conversion » poussés par js/main.js.
+       Conformité UE : configurez un CMP + Consent Mode V2 dans GTM.
+  ============================================================ -->
+  <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+  new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+  j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+  'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+  })(window,document,'script','dataLayer','GTM-PKK297FZ');</script>
+  <!-- End Google Tag Manager -->
 </head>
 <body>
+  <!-- Google Tag Manager (noscript) -->
+  <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-PKK297FZ" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+  <!-- End Google Tag Manager (noscript) -->
 
   <!-- ============================ HEADER ============================ -->
   <header class="header">
@@ -172,6 +186,15 @@
 
         <form class="lead-form" id="lead-form-main" novalidate>
           <input type="hidden" name="source" value="devis" />
+          <!-- Attribution Google Ads (renseignés automatiquement par js/main.js) -->
+          <input type="hidden" name="gclid" value="" />
+          <input type="hidden" name="gbraid" value="" />
+          <input type="hidden" name="wbraid" value="" />
+          <input type="hidden" name="utm_source" value="" />
+          <input type="hidden" name="utm_medium" value="" />
+          <input type="hidden" name="utm_campaign" value="" />
+          <input type="hidden" name="utm_term" value="" />
+          <input type="hidden" name="utm_content" value="" />
           <div class="form-row">
             <label for="m-name">Nom <span class="req">*</span></label>
             <input class="form-control" id="m-name" name="name" type="text" autocomplete="name" placeholder="Votre nom" required />

@@ -29,11 +29,21 @@ Dans `js/main.js`, section **« BRANCHEMENT BACKEND »**, remplacez le `setTimeo
   ```
 - **EmailJS**, **webhook Make/Zapier**, ou **API de votre CRM** : POST de l'objet `data`.
 
-### 2. Activer le tracking des conversions
-- Décommentez les scripts Google Ads / GA4 et Meta Pixel dans le `<head>` de `index.html`.
-- Renseignez vos identifiants dans `js/main.js` → objet `TRACKING`
-  (`googleAdsConversion`, `metaPixelLeadEvent`).
-- Les conversions se déclenchent automatiquement : **soumission formulaire** (`lead`) et **clic téléphone** (`call`).
+### 2. Tracking — aligné sur le conteneur GTM existant
+Le conteneur **GTM `GTM-PKK297FZ`** est posé dans `index.html` (head + noscript). Le compte **Google Ads `AW-18038306554`**, **GA4 `G-XK44TXMF71`** et le **Conversion Linker** y sont déjà configurés. La page émet exactement les signaux attendus par les balises existantes :
+
+| Conversion | Signal émis par la page | Balise GTM qui se déclenche |
+|---|---|---|
+| **Appel** | clics sur les liens `tel:` (header, héros, bouton conseillère, CTA final, footer) | déclencheur **« clic appel »** (Liens uniquement) → balise « clic appel » |
+| **Formulaire** | `dataLayer.push({ event: 'form_rdv_success' })` à la soumission réussie | déclencheur **`form_rdv_success`** → balise « prise de rdv envoyé » |
+
+- **Attribution** : `gclid` (+ `gbraid`/`wbraid` iOS + UTM) capturé depuis l'URL → injecté dans les **champs cachés** du formulaire (import des conversions hors-ligne + Conversion Linker).
+
+**⚠️ À vérifier dans GTM avant publication :**
+- La balise HTML **« Chtm - Écouteur Formulaire RDV »** vient de l'ancien site. Comme la page pousse désormais `form_rdv_success` elle-même, **mettez-la en pause / supprimez-la** pour éviter un double comptage (si elle écoute aussi les soumissions de formulaire).
+- Confirmer que le déclencheur **« clic appel »** filtre bien sur *URL du clic contient `tel:`*.
+- **Conformité UE** : CMP + **Consent Mode V2** dans GTM avant la mise en ligne (RGPD).
+- Mettre la **Final URL** des campagnes Google Ads vers cette page une fois déployée.
 
 ### 3. Contenu à personnaliser
 - **Offre choc** : `JUSQU'À 200€ OFFERTS PAR PARE-BRISE … OU UN CADEAU AU CHOIX` (hero, cartes, FAQ, CTA final). Ajustez le montant / la mention selon votre opération commerciale. **À valider juridiquement** (offre soumise à conditions assurance).
