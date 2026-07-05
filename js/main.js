@@ -8,6 +8,10 @@
 (function () {
   "use strict";
 
+  /* Webhook Make : reçoit le lead du formulaire → écrit la ligne dans Google Sheets.
+     Laissez vide = simulation d'envoi. */
+  var FORM_ENDPOINT = "https://hook.eu1.make.com/7l54peh1yrld6tpmqyyqhk5k60yovi9k";
+
   /* ----------------------------------------------------------------
      0. TRACKING — aligné sur le conteneur GTM existant (GTM-PKK297FZ)
         Conversions Google Ads déjà configurées (compte AW-18038306554) :
@@ -88,20 +92,32 @@
       var original = btn ? btn.innerHTML : "";
       if (btn) { btn.disabled = true; btn.innerHTML = "Envoi en cours…"; }
 
-      /* ----- BRANCHEMENT BACKEND -----------------------------------
-         Remplacez ce bloc par votre intégration réelle :
-         - Formspree :  fetch('https://formspree.io/f/XXXX', {method:'POST', body:new FormData(form), headers:{Accept:'application/json'}})
-         - EmailJS / webhook CRM : POST des données ci-dessous.
-         Pour l'instant : simulation d'un envoi réussi.
+      /* ----- ENVOI DU LEAD -----------------------------------------
+         POST vers le Web App Google Apps Script (enregistre le lead dans
+         Google Sheets + envoie l'email de notification). Voir README.
+         mode:'no-cors' + FormData = requête « simple » (pas de preflight CORS).
+         Si FORM_ENDPOINT est vide : simulation d'un envoi réussi.
       --------------------------------------------------------------- */
-      var data = Object.fromEntries(new FormData(form).entries());
-      // console.log('Lead capturé:', data);
-
-      setTimeout(function () {
-        fireConversion("lead");
+      function done() {
+        fireConversion("lead");         // conversion uniquement si envoi OK
         showSuccess(form);
         if (btn) { btn.disabled = false; btn.innerHTML = original; }
-      }, 700);
+      }
+      function fail() {
+        if (btn) { btn.disabled = false; btn.innerHTML = original; }
+        alert("Une erreur est survenue lors de l'envoi. Merci de nous appeler au 05 57 77 33 88.");
+      }
+
+      if (FORM_ENDPOINT) {
+        fetch(FORM_ENDPOINT, {
+          method: "POST",
+          mode: "no-cors",
+          headers: { "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8" },
+          body: new URLSearchParams(new FormData(form)).toString()
+        }).then(done).catch(fail);
+      } else {
+        setTimeout(done, 700); // simulation tant que FORM_ENDPOINT n'est pas configuré
+      }
     });
   }
 

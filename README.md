@@ -19,15 +19,14 @@ python -m http.server 8000   # puis http://localhost:8000
 
 ## À faire avant la mise en ligne
 
-### 1. Brancher le formulaire (actuellement en simulation)
-Dans `js/main.js`, section **« BRANCHEMENT BACKEND »**, remplacez le `setTimeout` par votre intégration :
-- **Formspree** (le plus simple, sans serveur) :
-  ```js
-  fetch('https://formspree.io/f/VOTRE_ID', {
-    method: 'POST', body: new FormData(form), headers: { Accept: 'application/json' }
-  }).then(function(r){ if(r.ok) showSuccess(form); });
-  ```
-- **EmailJS**, **webhook Make/Zapier**, ou **API de votre CRM** : POST de l'objet `data`.
+### 1. Formulaire → Make → Google Sheets + Email  ✅ en place
+Le formulaire POST vers un **webhook Make** (`FORM_ENDPOINT` dans `js/main.js`). Le flux complet :
+- **Site** (ce formulaire) → webhook Make → **Google Sheet** (Add a Row), source `gg`
+- **Meta** (Lead Ads) → Make → **le même Google Sheet**, source `fb`/`ig`
+- Un **script Apps Script** posé sur le Sheet envoie **un email par nouveau lead** (avec la source + nom + ville + modèle + assurance), déclenché **toutes les minutes**, **sans doublon**.
+
+Procédure détaillée + script d'email : **[FORMULAIRE-GOOGLE-SHEETS.md](FORMULAIRE-GOOGLE-SHEETS.md)**.
+Pour changer le webhook : `js/main.js` → `var FORM_ENDPOINT = "https://hook.eu1.make.com/…"`. Vide = envoi **simulé** (succès affiché, rien envoyé). Le `gclid`/UTM est transmis automatiquement pour l'attribution Google Ads.
 
 ### 2. Tracking — aligné sur le conteneur GTM existant
 Le conteneur **GTM `GTM-PKK297FZ`** est posé dans `index.html` (head + noscript). Le compte **Google Ads `AW-18038306554`**, **GA4 `G-XK44TXMF71`** et le **Conversion Linker** y sont déjà configurés. La page émet exactement les signaux attendus par les balises existantes :
