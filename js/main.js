@@ -105,7 +105,7 @@
       }
       function fail() {
         if (btn) { btn.disabled = false; btn.innerHTML = original; }
-        alert("Une erreur est survenue lors de l'envoi. Merci de nous appeler au 05 57 77 33 88.");
+        alert("Une erreur est survenue lors de l'envoi. Merci de nous appeler au 06 66 87 65 78.");
       }
 
       if (FORM_ENDPOINT) {

@@ -46,7 +46,7 @@ Le conteneur **GTM `GTM-PKK297FZ`** est posé dans `index.html` (head + noscript
 
 ### 3. Contenu à personnaliser
 - **Offre choc** : `JUSQU'À 200€ OFFERTS PAR PARE-BRISE … OU UN CADEAU AU CHOIX` (hero, cartes, FAQ, CTA final). Ajustez le montant / la mention selon votre opération commerciale. **À valider juridiquement** (offre soumise à conditions assurance).
-- **Téléphone** : `05 57 77 33 88` / `tel:+33557773388` (header, hero, footer, sticky, CTA final).
+- **Téléphone** : `06 66 87 65 78` / `tel:+33666876578` (header, hero, footer, sticky, CTA final).
 - **Adresse / horaires** : footer + JSON-LD.
 - **Avis clients** : remplacez les 3 témoignages par de vrais avis (idéalement Google).
 - **Chiffres réseau** marqués `*` (40 000 interventions, 75 centres) : à valider juridiquement.
