@@ -8,9 +8,9 @@
 (function () {
   "use strict";
 
-  /* Webhook Make : reçoit le lead du formulaire → écrit la ligne dans Google Sheets.
+  /* Niventy OS : reçoit le lead du formulaire → Google Sheets (remplace le webhook Make).
      Laissez vide = simulation d'envoi. */
-  var FORM_ENDPOINT = "https://hook.eu1.make.com/7l54peh1yrld6tpmqyyqhk5k60yovi9k";
+  var FORM_ENDPOINT = "https://crm.niventy.com/api/leads/site/209a7d58-6f79-43c5-a6d8-b11ddba112a6?key=6fkfkYQb7HdwI-3d_FkJnw6gBDy6zGTl";
 
   /* Pop-up de confirmation d'appel (voir 2b) : offre, mention et horaires. */
   var MONTANT_OFFERT = "200 €";   // espace insécable : évite « 200 » / « € » sur 2 lignes
