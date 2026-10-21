@@ -6,7 +6,6 @@
    Variables d'environnement (Vercel → Settings → Environment Variables) :
      META_PIXEL_ID          1814829916278385
      META_CAPI_TOKEN        jeton d'accès Conversions API (jamais dans le code)
-     META_TEST_EVENT_CODE   optionnel : code « Tester les évènements » (TEST…)
    ========================================================================== */
 const crypto = require("crypto");
 
@@ -63,7 +62,6 @@ module.exports = async function handler(req, res) {
       user_data: userData,
     }],
   };
-  if (process.env.META_TEST_EVENT_CODE) payload.test_event_code = process.env.META_TEST_EVENT_CODE;
 
   try {
     const r = await fetch(`${GRAPH}/${pixelId}/events?access_token=${encodeURIComponent(token)}`, {

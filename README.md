@@ -51,7 +51,6 @@ Le conteneur **GTM `GTM-PKK297FZ`** est posé dans `index.html` (head + noscript
 - Variables d'environnement Vercel (projet EPB → Settings → Environment Variables, puis redéployer) :
   - `META_PIXEL_ID` = `1814829916278385`
   - `META_CAPI_TOKEN` = jeton généré dans le Gestionnaire d'évènements (**jamais dans le code**)
-  - `META_TEST_EVENT_CODE` (optionnel) = code « Tester les évènements » ; **à supprimer après les tests**.
 - Sans jeton, la fonction ne fait rien (réponse 204) : le site fonctionne normalement.
 - Erreurs Meta visibles dans Vercel → Logs (préfixe `[meta-capi]`).
 
