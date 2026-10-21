@@ -43,8 +43,9 @@
         - FORMULAIRE : fbq Lead     - APPEL : fbq Contact (appels confirmés)
   ---------------------------------------------------------------- */
 
-  /** Déclenche la conversion. type = 'call' (appel) | 'lead' (formulaire) */
-  function fireConversion(type) {
+  /** Déclenche la conversion. type = 'call' (appel) | 'lead' (formulaire).
+      eventId : partagé avec la Conversions API (déduplication Meta). */
+  function fireConversion(type, eventId) {
     try {
       if (type === "lead") {
         window.dataLayer = window.dataLayer || [];
@@ -53,7 +54,8 @@
       // 'call' : rien côté GTM — le déclencheur « clic appel »
       //          (Liens uniquement) capte directement les liens tel:.
       if (typeof window.fbq === "function") {
-        window.fbq("track", type === "lead" ? "Lead" : "Contact");
+        if (type === "lead") window.fbq("track", "Lead", {}, { eventID: eventId });
+        else window.fbq("track", "Contact");
       }
     } catch (e) { /* tracking non bloquant */ }
   }
@@ -123,7 +125,9 @@
          Si FORM_ENDPOINT est vide : simulation d'un envoi réussi.
       --------------------------------------------------------------- */
       function done() {
-        fireConversion("lead");         // conversion uniquement si envoi OK
+        var eventId = "lead-" + Date.now() + "-" + Math.random().toString(36).slice(2, 10);
+        fireConversion("lead", eventId); // conversion uniquement si envoi OK
+        sendMetaCapi(form, eventId);
         showSuccess(form);
         if (btn) { btn.disabled = false; btn.innerHTML = original; }
       }
@@ -143,6 +147,41 @@
         setTimeout(done, 700); // simulation tant que FORM_ENDPOINT n'est pas configuré
       }
     });
+  }
+
+  /* Conversions API Meta : même Lead envoyé côté serveur par api/meta-lead.js
+     (jeton dans les variables d'environnement Vercel). Non bloquant. */
+  function sendMetaCapi(form, eventId) {
+    try {
+      var fd = new FormData(form);
+      fetch("/api/meta-lead", {
+        method: "POST",
+        keepalive: true,
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          event_id: eventId,
+          name: fd.get("name"),
+          phone: fd.get("phone"),
+          city: fd.get("city"),
+          fbp: cookie("_fbp"),
+          fbc: fbc(),
+          url: location.href.split("#")[0]
+        })
+      }).catch(function () { /* tracking non bloquant */ });
+    } catch (e) { /* tracking non bloquant */ }
+  }
+
+  function cookie(nom) {
+    var m = document.cookie.match(new RegExp("(?:^|; )" + nom + "=([^;]*)"));
+    return m ? decodeURIComponent(m[1]) : "";
+  }
+
+  /** Cookie _fbc du pixel, sinon reconstruit depuis ?fbclid= (format Meta). */
+  function fbc() {
+    var c = cookie("_fbc");
+    if (c) return c;
+    var id = new URLSearchParams(location.search).get("fbclid");
+    return id ? "fb.1." + Date.now() + "." + id : "";
   }
 
   function showSuccess(form) {

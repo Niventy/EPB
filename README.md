@@ -46,6 +46,15 @@ Le conteneur **GTM `GTM-PKK297FZ`** est posé dans `index.html` (head + noscript
 
 - Ne pas ajouter en plus une balise Meta Pixel dans GTM (double comptage).
 
+**Conversions API Meta** — fonction serverless Vercel `api/meta-lead.js` (`POST /api/meta-lead`) :
+- À l'envoi réussi du formulaire, `js/main.js` génère un `event_id`, le passe au pixel (`fbq('track','Lead',{},{eventID})`) et l'envoie à `/api/meta-lead` avec nom, téléphone, ville, cookies `_fbp`/`_fbc` et URL. La fonction renvoie le `Lead` à Meta (données hachées SHA-256 + IP + user-agent). Même `event_id` → Meta déduplique.
+- Variables d'environnement Vercel (projet EPB → Settings → Environment Variables, puis redéployer) :
+  - `META_PIXEL_ID` = `1814829916278385`
+  - `META_CAPI_TOKEN` = jeton généré dans le Gestionnaire d'évènements (**jamais dans le code**)
+  - `META_TEST_EVENT_CODE` (optionnel) = code « Tester les évènements » ; **à supprimer après les tests**.
+- Sans jeton, la fonction ne fait rien (réponse 204) : le site fonctionne normalement.
+- Erreurs Meta visibles dans Vercel → Logs (préfixe `[meta-capi]`).
+
 - **Attribution** : `gclid` (+ `gbraid`/`wbraid` iOS + UTM) capturé depuis l'URL → injecté dans les **champs cachés** du formulaire (import des conversions hors-ligne + Conversion Linker).
 
 **⚠️ À vérifier dans GTM avant publication :**
