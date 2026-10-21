@@ -36,6 +36,16 @@ Le conteneur **GTM `GTM-PKK297FZ`** est posé dans `index.html` (head + noscript
 | **Appel** | clics sur les liens `tel:` (header, héros, bouton conseillère, CTA final, footer) | déclencheur **« clic appel »** (Liens uniquement) → balise « clic appel » |
 | **Formulaire** | `dataLayer.push({ event: 'form_rdv_success' })` à la soumission réussie | déclencheur **`form_rdv_success`** → balise « prise de rdv envoyé » |
 
+**Meta Pixel `1814829916278385`** — posé en dur dans `index.html` (hors GTM) :
+
+| Évènement Meta | Quand |
+|---|---|
+| `PageView` | chargement de la page (snippet dans le `<head>`) |
+| `Lead` | soumission réussie du formulaire (`fireConversion('lead')`) |
+| `Contact` | clic sur un lien `tel:` réellement lancé (les taps interceptés par la pop-up de confirmation ne comptent pas ; le bouton « Appeler » de la pop-up, oui) |
+
+- Ne pas ajouter en plus une balise Meta Pixel dans GTM (double comptage).
+
 - **Attribution** : `gclid` (+ `gbraid`/`wbraid` iOS + UTM) capturé depuis l'URL → injecté dans les **champs cachés** du formulaire (import des conversions hors-ligne + Conversion Linker).
 
 **⚠️ À vérifier dans GTM avant publication :**

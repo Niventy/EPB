@@ -39,6 +39,8 @@
         - FORMULAIRE : conversion « prise de rdv envoyé », déclenchée par
                      l'évènement personnalisé  form_rdv_success.
         => On pousse cet évènement à la soumission réussie du formulaire.
+        Meta Pixel (1814829916278385, chargé dans index.html) :
+        - FORMULAIRE : fbq Lead     - APPEL : fbq Contact (appels confirmés)
   ---------------------------------------------------------------- */
 
   /** Déclenche la conversion. type = 'call' (appel) | 'lead' (formulaire) */
@@ -48,8 +50,11 @@
         window.dataLayer = window.dataLayer || [];
         window.dataLayer.push({ event: "form_rdv_success" });
       }
-      // 'call' : aucune action ici — le déclencheur GTM « clic appel »
+      // 'call' : rien côté GTM — le déclencheur « clic appel »
       //          (Liens uniquement) capte directement les liens tel:.
+      if (typeof window.fbq === "function") {
+        window.fbq("track", type === "lead" ? "Lead" : "Contact");
+      }
     } catch (e) { /* tracking non bloquant */ }
   }
 
@@ -156,8 +161,12 @@
      2. APPELS TÉLÉPHONIQUES — tracking sur clic
   ---------------------------------------------------------------- */
   function initCallTracking() {
-    document.querySelectorAll('a[href^="tel:"]').forEach(function (a) {
-      a.addEventListener("click", function () { fireConversion("call"); });
+    // Délégation : couvre aussi le bouton « Appeler » de la pop-up (créé en JS).
+    // Les taps interceptés par la pop-up (stopPropagation) ne remontent pas ici
+    // → seuls les appels réellement lancés sont comptés.
+    document.addEventListener("click", function (e) {
+      var a = e.target.closest && e.target.closest('a[href^="tel:"]');
+      if (a) fireConversion("call");
     });
   }
 
